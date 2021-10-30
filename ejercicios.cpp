@@ -5,11 +5,33 @@
 using namespace std;
 // Implementacion Problema 1
 bool esEncuestaValida ( eph_h th, eph_i ti ) {
-	bool resp = false;
-	
-	// TODO
-	
-	return resp;
+	if(th.size() == 0 || ti.size() == 0){
+		return false;
+	}
+	int anio = th[0][HOGANIO], trimestre = th[0][HOGTRIMESTRE];
+	vector<pair<int, int>> individuosUnicos;
+	for (individuo i: ti){
+		if (i.size() != FILAS_INDIVIDUO){
+			return false;
+		} else if (perteneceBinario(individuosUnicos, make_pair(i[INDCODUSU], i[COMPONENTE]))) {
+			return false;
+		} else if (i[INDANIO] != anio || i[INDCODUSU] != trimestre){
+			return false;
+		} else if(i[COMPONENTE] > 20){
+			return false;
+		}
+	}
+	for (hogar h: th){
+		if (h.size() != FILAS_HOGAR){
+			return false;
+		} else if(h[IV2] < h[II2]){
+			return false;
+		}
+		 else if (h[HOGANIO] != anio || h[HOGTRIMESTRE] != trimestre){
+			return false;
+		}
+	}
+	return true;
 }
 
 // Implementacion Problema 2

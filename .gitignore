@@ -1,8 +1,9 @@
-/build
-/lib/*
-
-# Ignorar archivos sin extension
 *
 !*.*
 !*/
 build
+lib/*
+CMakeFiles
+bin
+*.cmake
+CMakeCache.txt

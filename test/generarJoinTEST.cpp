@@ -44,8 +44,8 @@ TEST(generarJoinTEST, casoFacil) {
 
     join_hi obtenido = generarJoin(th, ti);
 
-    sort(junta.begin(), junta.end());
-    sort(obtenido.begin(), obtenido.end());
+    // sort(junta.begin(), junta.end());
+    // sort(obtenido.begin(), obtenido.end());
 
     EXPECT_EQ(junta, obtenido);
 }
