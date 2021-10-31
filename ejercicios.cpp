@@ -9,28 +9,40 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 		return false;
 	}
 	vector<pair<int, int>> individuosUnicos;
+	vector<int> indcodusuUnicos;
 	int anio = th[0][HOGANIO], trimestre = th[0][HOGTRIMESTRE];
 	for (individuo i: ti){
 		if (i.size() != FILAS_INDIVIDUO){
+			return false;
+		} else if (ti[0][INDANIO] != i[INDANIO] || ti[0][INDTRIMESTRE] != i[INDTRIMESTRE]){
 			return false;
 		} else if (perteneceBinario(make_pair(i[INDCODUSU], i[COMPONENTE]), individuosUnicos)) {
 			return false;
 		} else if (i[INDANIO] != anio || i[INDCODUSU] != trimestre){
 			return false;
-		} else if(i[COMPONENTE] > 20){
+		} else if (i[COMPONENTE] > 20){
 			return false;
 		}
-		insertarOrdenado(make_pair(i[HOGCODUSU], i[COMPONENTE]), individuosUnicos);
+		insertarOrdenado(make_pair(i[INDCODUSU], i[COMPONENTE]), individuosUnicos);
+		if (!perteneceBinario(i[INDCODUSU], indcodusuUnicos)){
+			insertarOrdenado(i[INDCODUSU], indcodusuUnicos);
+		}
 	}
+	vector<int> hogcodusuUnicos;
 	for (hogar h: th){
 		if (h.size() != FILAS_HOGAR){
 			return false;
-		} else if(h[IV2] < h[II2]){
+		} else if (perteneceBinario(h[HOGCODUSU], hogcodusuUnicos)){
+			return false;
+		} else if (h[IV2] < h[II2]){
+			return false;
+		} else if (h[HOGANIO] != anio || h[HOGTRIMESTRE] != trimestre){
 			return false;
 		}
-		 else if (h[HOGANIO] != anio || h[HOGTRIMESTRE] != trimestre){
-			return false;
-		}
+		insertarOrdenado(h[HOGCODUSU], hogcodusuUnicos);
+	}
+	if (indcodusuUnicos != hogcodusuUnicos){
+		return false;
 	}
 	return true;
 }
