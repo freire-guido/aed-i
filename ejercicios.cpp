@@ -10,7 +10,6 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 	}
 	vector<pair<int, int>> individuosUnicos;
 	vector<int> indcodusuUnicos;
-	int anio = th[0][HOGANIO], trimestre = th[0][HOGTRIMESTRE];
 	for (individuo i: ti){
 		if (i.size() != FILAS_INDIVIDUO){
 			return false;
@@ -18,9 +17,18 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 			return false;
 		} else if (perteneceBinario(make_pair(i[INDCODUSU], i[COMPONENTE]), individuosUnicos)) {
 			return false;
-		} else if (i[INDANIO] != anio || i[INDCODUSU] != trimestre){
-			return false;
 		} else if (i[COMPONENTE] > 20){
+			return false;
+		} else if (!(i[INDCODUSU] > 0
+		&& i[COMPONENTE] > 0
+		&& (0 < i[INDTRIMESTRE] && i[INDTRIMESTRE] <= 4)
+		&& (0 < i[CH4] && i[CH4] <= 2)
+		&& i[CH6] >= 0
+		&& (i[NIVEL_ED] == 0 || i[NIVEL_ED] == 1)
+		&& (-1 <= i[ESTADO] && i[ESTADO] <= 1)
+		&& (0 <= i[CAT_OCUP] && i[CAT_OCUP] <= 4)
+		&& (i[p47T] >= 0 || i[p47T] == -1)
+		&& (0 <= i[PP04G] && i[PP04G] <= 10))){
 			return false;
 		}
 		insertarOrdenado(make_pair(i[INDCODUSU], i[COMPONENTE]), individuosUnicos);
@@ -36,8 +44,18 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 			return false;
 		} else if (h[IV2] < h[II2]){
 			return false;
-		} else if (h[HOGANIO] != anio || h[HOGTRIMESTRE] != trimestre){
+		} else if (ti[0][INDANIO] != h[HOGANIO] || ti[0][INDTRIMESTRE] != h[HOGTRIMESTRE]){
 			return false;
+		} else if(!(h[HOGCODUSU] > 0 
+		&& (0 < h[HOGTRIMESTRE] && h[HOGTRIMESTRE] <= 4) 
+		&& (0 < h[II7] && h[II7] <= 3) 
+		&& (h[REGION] == 1 || (40 <= h[REGION] && h[REGION] <= 44)) 
+		&& (h[MAS_500] == 0 || h[MAS_500] == 1) 
+		&& (0 < h[IV1] && h[IV1] <= 5) 
+		&& h[IV2]> 0 
+		&& h[II2] >= 1 
+		&& (h[II3] == 1 || h[II3] == 2))){
+				return false;
 		}
 		insertarOrdenado(h[HOGCODUSU], hogcodusuUnicos);
 	}
