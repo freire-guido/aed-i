@@ -57,14 +57,42 @@ vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
 // Implementacion Problema 3
 vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
 
-    vector<pair<int,float>> resp = {make_pair(1,-1.0),
-                                        make_pair(40, -1.0),
-                                        make_pair(41, -1.0),
-                                        make_pair(42,-1.0),
-                                        make_pair(43,-1.0),
-                                        make_pair(44,-1.0)};
-	// TODO
-	
+//    vector<pair<int,float>> resp = {make_pair(1,-1.0),
+//                                        make_pair(40, -1.0),
+//                                        make_pair(41, -1.0),
+//                                        make_pair(42,-1.0),
+//                                        make_pair(43,-1.0),
+//                                        make_pair(44,-1.0)};
+
+    vector<pair<int,float>> resp;
+    vector<int> regiones = {1,40,41,42,43,44};
+    for(int j=0;j<regiones.size();j++){
+        int hogaresValidos = 0;
+        int hogaresCriticos = 0;
+        for(hogar h : th){
+            if(h[REGION]== regiones[j] && h[MAS_500] == 0 && h[IV1] == 1){
+                hogaresValidos += 1;
+                int individuosHogar = 0;
+                int habitacionesHogar = h[IV2];
+                for(individuo i : ti){
+                    if(i[INDCODUSU] == h[HOGCODUSU]){
+                        individuosHogar += 1;
+                    }
+                }
+                if(habitacionesHogar / individuosHogar > 3){
+                    hogaresCriticos += 1;
+                }
+            }
+        }
+        if(hogaresValidos == 0){
+            pair<int,float> hogarRegioni = {regiones[j],0};
+            resp.push_back(hogarRegioni);
+        } else{
+            pair<int,float> hogarRegioni = {regiones[j],(hogaresCriticos/hogaresValidos)};
+            resp.push_back(hogarRegioni);
+        }
+    }
+
   return resp;
 }
 
