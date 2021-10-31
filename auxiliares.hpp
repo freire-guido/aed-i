@@ -9,11 +9,11 @@ bool perteneceBinario(T e, const vector<T>& v){
     int i = 0;
     int j = v.size() - 1;
     while (i <= j){  
-        int k = (i + j)/2;
-        if(v[k] == e){
+        int k = (i + j) / 2;
+        if (v[k] == e){
             return true;
         }
-        else if(v[k] < e){
+        else if (v[k] < e){
             i = k + 1;
         } else {
             j = k - 1;
@@ -27,7 +27,7 @@ void insertarOrdenado(T e, vector<T>& v){
     //busca el elemento "anterior" (el menor mas grande)
     int i = 0;
     int j = v.size() - 1;
-    while (i < j){
+    while (i <= j){
         int k = (i + j) / 2;
         if (v[k] <  e){
             i = k + 1;
@@ -35,5 +35,5 @@ void insertarOrdenado(T e, vector<T>& v){
             j = k - 1;
         }
     }
-    v.insert(v.begin() + i + 1, e);
+    v.insert(v.begin() + i, e);
 }
