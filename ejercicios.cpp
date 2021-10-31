@@ -5,21 +5,22 @@
 using namespace std;
 // Implementacion Problema 1
 bool esEncuestaValida ( eph_h th, eph_i ti ) {
-	if(th.size() == 0 || ti.size() == 0){
+	if (th.size() == 0 || ti.size() == 0){
 		return false;
 	}
-	int anio = th[0][HOGANIO], trimestre = th[0][HOGTRIMESTRE];
 	vector<pair<int, int>> individuosUnicos;
+	int anio = th[0][HOGANIO], trimestre = th[0][HOGTRIMESTRE];
 	for (individuo i: ti){
 		if (i.size() != FILAS_INDIVIDUO){
 			return false;
-		} else if (perteneceBinario(individuosUnicos, make_pair(i[INDCODUSU], i[COMPONENTE]))) {
+		} else if (perteneceBinario(make_pair(i[INDCODUSU], i[COMPONENTE]), individuosUnicos)) {
 			return false;
 		} else if (i[INDANIO] != anio || i[INDCODUSU] != trimestre){
 			return false;
 		} else if(i[COMPONENTE] > 20){
 			return false;
 		}
+		insertarOrdenado(make_pair(i[HOGCODUSU], i[COMPONENTE]), individuosUnicos);
 	}
 	for (hogar h: th){
 		if (h.size() != FILAS_HOGAR){
