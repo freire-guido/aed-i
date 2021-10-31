@@ -37,8 +37,18 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 
 // Implementacion Problema 2
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
-	vector < int > resultado = {-1, -1, -1, -1, -1, -1};
-	
+	vector < int > resultado;
+	for(int i = 0; i<th.size();i++){
+	    if(th[i][IV1] == CASA && th[i][REGION] == region){
+	        int cantidadHabitaciones = th[i][IV2];
+	        if(cantidadHabitaciones > resultado.size()){
+	            for(int j=resultado.size();j < cantidadHabitaciones;j++){
+	                resultado.push_back(0);
+	            }
+	        }
+	        resultado[cantidadHabitaciones-1] += 1;
+	    }
+	}
 	// TODO
 	
 	return resultado;
