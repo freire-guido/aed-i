@@ -67,33 +67,24 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 
 // Implementacion Problema 2
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
-	vector < int > resultado;
+    vector < int > resp;
 	for(int i = 0; i<th.size();i++){
 	    if(th[i][IV1] == CASA && th[i][REGION] == region){
 	        int cantidadHabitaciones = th[i][IV2];
-	        if(cantidadHabitaciones > resultado.size()){
-	            for(int j=resultado.size();j < cantidadHabitaciones;j++){
-	                resultado.push_back(0);
+	        if(cantidadHabitaciones > resp.size()){
+	            for(int j=resp.size();j < cantidadHabitaciones;j++){
+	                resp.push_back(0);
 	            }
 	        }
-	        resultado[cantidadHabitaciones-1] += 1;
+	        resp[cantidadHabitaciones-1] += 1;
 	    }
 	}
-	// TODO
 	
-	return resultado;
+	return resp;
 }
 
 // Implementacion Problema 3
 vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
-
-//    vector<pair<int,float>> resp = {make_pair(1,-1.0),
-//                                        make_pair(40, -1.0),
-//                                        make_pair(41, -1.0),
-//                                        make_pair(42,-1.0),
-//                                        make_pair(43,-1.0),
-//                                        make_pair(44,-1.0)};
-
     vector<pair<int,float>> resp;
     vector<int> regiones = {1,40,41,42,43,44};
     for(int j=0;j<regiones.size();j++){
@@ -103,13 +94,13 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
             if(h[REGION]== regiones[j] && h[MAS_500] == 0 && h[IV1] == 1){
                 hogaresValidos += 1;
                 int individuosHogar = 0;
-                int habitacionesHogar = h[IV2];
+                int dormitoriosHogar = h[II2];  // En la especificion usan dormitorios (II2) no habitaciones(IV2).
                 for(individuo i : ti){
                     if(i[INDCODUSU] == h[HOGCODUSU]){
                         individuosHogar += 1;
                     }
                 }
-                if(habitacionesHogar / individuosHogar > 3){
+                if(individuosHogar > 3 * dormitoriosHogar){
                     hogaresCriticos += 1;
                 }
             }
