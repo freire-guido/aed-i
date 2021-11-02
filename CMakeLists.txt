@@ -10,7 +10,7 @@ include_directories(lib/googletest-master/googletest/include)
 file(GLOB DIR_TESTS_EN "test/*.cpp")
 
 set(SOURCE_FILES main.cpp
-        auxiliares.hpp
+        auxiliares.cpp
         ejercicios.cpp
         Funciones_TPI.cpp)
 

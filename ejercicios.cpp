@@ -1,5 +1,5 @@
 #include "ejercicios.h"
-#include "auxiliares.hpp"
+#include "auxiliares.h"
 #include "definiciones.h"
 
 using namespace std;
@@ -108,7 +108,6 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
     }
 
   return resp;
-}
 
 
 // Implementacion Problema 4
