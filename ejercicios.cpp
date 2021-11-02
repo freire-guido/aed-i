@@ -68,15 +68,14 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 // Implementacion Problema 2
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
     vector < int > resp;
-	for (int i=0; i < th.size();i++){
+	for (int i=0; i < th.size(); i++){
 	    if (th[i][IV1] == CASA && th[i][REGION] == region){
-	        int cantidadHabitaciones = th[i][IV2];
-	        if (cantidadHabitaciones > resp.size()){
-	            for (int j=resp.size(); j < cantidadHabitaciones; j++){
+	        if (th[i][IV2] > resp.size()){
+	            for (int j=resp.size(); j < th[i][IV1]; j++){
 	                resp.push_back(0);
 	            }
 	        }
-	        resp[cantidadHabitaciones-1] += 1;
+	        resp[th[i][IV1]-1]++;
 	    }
 	}
 	return resp;
@@ -114,7 +113,7 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
 
 // Implementacion Problema 4
 bool creceElTeleworkingEnCiudadesGrandes ( eph_h t1h, eph_i t1i, eph_h t2h, eph_i t2i ) {
-    return(proporcionTeleworking(t2h,t2i) > proporcionTeleworking(t1h,t1i));
+    return proporcionTeleworking(t2h,t2i) > proporcionTeleworking(t1h,t1i);
 }
 
 float proporcionTeleworking(eph_h encuestaHogar, eph_i encuestaIndividuo) {
