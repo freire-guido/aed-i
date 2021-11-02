@@ -36,5 +36,4 @@ void insertarOrdenado(T e, vector<T>& v){
         }
     }
     v.insert(v.begin() + i, e);
-    return;
 }
