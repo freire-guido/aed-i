@@ -13,6 +13,7 @@ bool esEncuestaValida ( eph_h th, eph_i ti );
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region );
 vector < pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti );
 bool creceElTeleworkingEnCiudadesGrandes ( eph_h t1h, eph_i t1i, eph_h t2h, eph_i t2i );
+float proporcionTeleworking(eph_h encuestaHogar, eph_i encuestaIndividuo);
 int costoSubsidioMejora( eph_h th, eph_i ti, int monto );
 join_hi generarJoin( eph_h th, eph_i ti );
 void ordenarRegionYCODUSU ( eph_h & th, eph_i & ti );

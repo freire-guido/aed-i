@@ -83,6 +83,16 @@ vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
 	return resp;
 }
 
+int cantidadHabitantes(dato &h,eph_i ti){
+    int habitantes = 0;
+    for(individuo i : ti){
+        if(i[INDCODUSU] == h){
+            habitantes += 1;
+        }
+    }
+    return(habitantes);
+}
+
 // Implementacion Problema 3
 vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
     vector<pair<int,float>> resp;
@@ -93,13 +103,8 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
         for(hogar h : th){
             if(h[REGION]== regiones[j] && h[MAS_500] == 0 && h[IV1] == 1){
                 hogaresValidos += 1;
-                int individuosHogar = 0;
+                int individuosHogar = cantidadHabitantes(h[HOGCODUSU], ti);
                 int dormitoriosHogar = h[II2];  // En la especificion usan dormitorios (II2) no habitaciones(IV2).
-                for(individuo i : ti){
-                    if(i[INDCODUSU] == h[HOGCODUSU]){
-                        individuosHogar += 1;
-                    }
-                }
                 if(individuosHogar > 3 * dormitoriosHogar){
                     hogaresCriticos += 1;
                 }
@@ -117,32 +122,55 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
   return resp;
 }
 
+
 // Implementacion Problema 4
 bool creceElTeleworkingEnCiudadesGrandes ( eph_h t1h, eph_i t1i, eph_h t2h, eph_i t2i ) {
-	bool resp = false;
-	
-	// TODO
-	
-  return  resp;
+    return(proporcionTeleworking(t2h,t2i) > proporcionTeleworking(t1h,t1i));
 }
+
+float proporcionTeleworking(eph_h encuestaHogar, eph_i encuestaIndividuo) {
+    float trabajadores = 0, teleworkers = 0;
+    for(hogar h : encuestaHogar){
+        if(h[MAS_500] == 1 and (h[IV1] == 1 or h[IV1] == 2)){
+            for(individuo i : encuestaIndividuo){
+                if(i[INDCODUSU] == h[HOGCODUSU] && i[ESTADO] == 1 && i[PP04G] == 6){
+                    teleworkers++;
+                } else if(i[INDCODUSU] == h[HOGCODUSU] && i[ESTADO] == 1){
+                    trabajadores++;
+                }
+            }
+        }
+    }
+    if(trabajadores == 0){
+        return(0);
+    } else{
+        return(teleworkers / trabajadores);
+    }
+}
+
 
 // Implementacion Problema 5
 int costoSubsidioMejora( eph_h th, eph_i ti, int monto ){
-	int resp = -1;
-	
-	// TODO
-	
-  return  resp;
+    int subsidio = 0;
+    for(hogar h : th){
+        if(h[II7] == 1 and (cantidadHabitantes(h[HOGCODUSU],ti) - 2 > h[II2])){
+            subsidio += monto;
+        }
+    }
+  return subsidio;
 }
+
 
 // Implementacion Problema 6
 join_hi generarJoin( eph_h th, eph_i ti ){
-    hogar h = {};
-    individuo i = {};
-	join_hi resp = {make_pair(h,i)};
-	
-	// TODO
-	
+	join_hi resp;
+	for(individuo i : ti){
+	    for(hogar h : th){
+	        if(i[INDCODUSU] == h[HOGCODUSU]){
+	            resp.push_back({h,i});
+	        }
+	    }
+	}
   return  resp;
 }
 
@@ -166,9 +194,11 @@ vector < hogar > muestraHomogenea( eph_h & th, eph_i & ti ){
 
 // Implementacion Problema 9
 void corregirRegion( eph_h & th, eph_i ti ) {
-	
-	// TODO
-	
+    for(int h=0;h<th.size();h++){
+        if(th[h][REGION] == 1){
+            th[h][REGION] = 43;
+        }
+    }
 	return;
 }
 
