@@ -1,5 +1,5 @@
 #include "ejercicios.h"
-#include "auxiliares.h"
+#include "auxiliares.hpp"
 #include "definiciones.h"
 
 using namespace std;
@@ -68,29 +68,18 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 // Implementacion Problema 2
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
     vector < int > resp;
-	for(int i = 0; i<th.size();i++){
-	    if(th[i][IV1] == CASA && th[i][REGION] == region){
+	for (int i=0; i < th.size();i++){
+	    if (th[i][IV1] == CASA && th[i][REGION] == region){
 	        int cantidadHabitaciones = th[i][IV2];
-	        if(cantidadHabitaciones > resp.size()){
-	            for(int j=resp.size();j < cantidadHabitaciones;j++){
+	        if (cantidadHabitaciones > resp.size()){
+	            for (int j=resp.size(); j < cantidadHabitaciones; j++){
 	                resp.push_back(0);
 	            }
 	        }
 	        resp[cantidadHabitaciones-1] += 1;
 	    }
 	}
-	
 	return resp;
-}
-
-int cantidadHabitantes(dato &h,eph_i ti){
-    int habitantes = 0;
-    for(individuo i : ti){
-        if(i[INDCODUSU] == h){
-            habitantes += 1;
-        }
-    }
-    return(habitantes);
 }
 
 // Implementacion Problema 3
@@ -102,7 +91,7 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
         int hogaresCriticos = 0;
         for(hogar h : th){
             if(h[REGION]== regiones[j] && h[MAS_500] == 0 && h[IV1] == 1){
-                hogaresValidos += 1;
+                hogaresValidos += 1;	
                 int individuosHogar = cantidadHabitantes(h[HOGCODUSU], ti);
                 int dormitoriosHogar = h[II2];  // En la especificion usan dormitorios (II2) no habitaciones(IV2).
                 if(individuosHogar > 3 * dormitoriosHogar){
@@ -141,11 +130,7 @@ float proporcionTeleworking(eph_h encuestaHogar, eph_i encuestaIndividuo) {
             }
         }
     }
-    if(trabajadores == 0){
-        return(0);
-    } else{
-        return(teleworkers / trabajadores);
-    }
+	return trabajadores == 0 ? 0 : teleworkers / trabajadores;
 }
 
 
@@ -171,7 +156,7 @@ join_hi generarJoin( eph_h th, eph_i ti ){
 	        }
 	    }
 	}
-  return  resp;
+  return resp;
 }
 
 // Implementacion Problema 7
