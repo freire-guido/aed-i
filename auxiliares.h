@@ -58,6 +58,38 @@ bool perteneceBinario(T e, const vector<T>& v){
     return false;
 }
 
+//Devuelve el indice del ultimo par de v con primer elemento menor o igual a e, -1 si no hay
+template<typename T, typename V>
+int indiceMenorigual(T e, vector<pair<T, V>>& v){
+    int i = 0;
+    int j = v.size() - 1;
+    while (i <= j){
+        int k = (i + j) / 2;
+        if (v[k].first <=  e){
+            i = k + 1;
+        } else {
+            j = k - 1;
+        }
+    }
+    return i - 1;
+}
+
+//Devuelve el indice del ultimo elemento de v menor o igual a e, -1 si no hay
+template<typename T>
+int indiceMenorigual(T e, vector<T>& v){
+    int i = 0;
+    int j = v.size() - 1;
+    while (i <= j){
+        int k = (i + j) / 2;
+        if (v[k] <=  e){
+            i = k + 1;
+        } else {
+            j = k - 1;
+        }
+    }
+    return i - 1;
+}
+
 int cantidadHabitantes(dato &h,eph_i ti);
 
 #endif //SOLUCION_AUXILIARES_H
