@@ -71,11 +71,11 @@ vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
 	for (int i=0; i < th.size(); i++){
 	    if (th[i][IV1] == CASA && th[i][REGION] == region){
 	        if (th[i][IV2] > resp.size()){
-	            for (int j=resp.size(); j < th[i][IV1]; j++){
+	            for (int j=resp.size(); j < th[i][IV2]; j++){
 	                resp.push_back(0);
 	            }
 	        }
-	        resp[th[i][IV1]-1]++;
+	        resp[th[i][IV2]-1]++;
 	    }
 	}
 	return resp;
@@ -83,32 +83,44 @@ vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
 
 // Implementacion Problema 3
 vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
-    vector<pair<int,float>> resp;
-    vector<int> regiones = {1,40,41,42,43,44};
-    for(int j=0;j<regiones.size();j++){
-        int hogaresValidos = 0;
-        int hogaresCriticos = 0;
-        for(hogar h : th){
-            if(h[REGION]== regiones[j] && h[MAS_500] == 0 && h[IV1] == 1){
-                hogaresValidos += 1;	
-                int individuosHogar = cantidadHabitantes(h[HOGCODUSU], ti);
-                int dormitoriosHogar = h[II2];  // En la especificion usan dormitorios (II2) no habitaciones(IV2).
-                if(individuosHogar > 3 * dormitoriosHogar){
-                    hogaresCriticos += 1;
-                }
-            }
-        }
-        if(hogaresValidos == 0){
-            pair<int,float> hogarRegioni = {regiones[j],0};
-            resp.push_back(hogarRegioni);
-        } else{
-            pair<int,float> hogarRegioni = {regiones[j],(hogaresCriticos/hogaresValidos)};
-            resp.push_back(hogarRegioni);
-        }
-    }
+	vector<int> regiones = {1,40,41,42,43,44};
+	vector<pair<int, float>> res;
+	for (int i=0; i < regiones.size(); i++){
+		res.push_back(make_pair(regiones[i], 0));
+	} //Ahora res contiene la lista de pares <region, float = 0>
 
-  return resp;
+	vector<pair<int, int>> habitantesPorHogcodusu;
+	for (individuo i: ti){
+		//Almacenamos indice para ver si pertenece y insertar (ordenado) al mismo tiempo.
+		int indiceDei = indiceMenorigual(i[INDCODUSU], habitantesPorHogcodusu);
+		if (indiceDei > -1 && habitantesPorHogcodusu[indiceDei].first == i[INDCODUSU]){
+			habitantesPorHogcodusu[indiceDei].second++;
+		} else {
+			habitantesPorHogcodusu.insert(habitantesPorHogcodusu.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 1));
+		}
+	} //Ahora habitantesPorHogcodusu es una lista (ordenada) de pares <hogcodusu, habitantes>.
 
+	vector<int> validosPorRegion(6, 0); 
+	for (hogar h: th){
+		if (h[MAS_500] == 0 && h[IV1] == 1){
+			int indiceEnRegion = indiceMenorigual(h[REGION], regiones);
+			validosPorRegion[indiceEnRegion]++;
+			int cantidadHabitantes = habitantesPorHogcodusu[indiceMenorigual(h[HOGCODUSU], habitantesPorHogcodusu)].second;
+			if (cantidadHabitantes > 3 * h[II2]){
+				res[indiceEnRegion].second++;
+			}
+		}
+	} //Ahora res es una lista (ordenada) de pares <region, hogaresCriticos> para cada region.
+
+	for (int i=0; i < regiones.size(); i++){
+		if (validosPorRegion[i] != 0){
+			res[i].second /= validosPorRegion[i];
+		} else {
+			res[i].second = 0;
+		}
+	}
+	return res;
+}
 
 // Implementacion Problema 4
 bool creceElTeleworkingEnCiudadesGrandes ( eph_h t1h, eph_i t1i, eph_h t2h, eph_i t2i ) {

@@ -10,7 +10,7 @@ void insertarOrdenado(T e, vector<T>& v){
     int j = v.size() - 1;
     while (i <= j){
         int k = (i + j) / 2;
-        if (v[k] <  e){
+        if (v[k] < e){
             i = k + 1;
         } else {
             j = k - 1;
@@ -71,7 +71,7 @@ int indiceMenorigual(T e, vector<pair<T, V>>& v){
             j = k - 1;
         }
     }
-    return i - 1;
+    return i - 1; 
 }
 
 //Devuelve el indice del ultimo elemento de v menor o igual a e, -1 si no hay
