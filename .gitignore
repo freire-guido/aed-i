@@ -2,9 +2,11 @@
 !*.*
 !*/
 build
-lib/*
+lib
 CMakeFiles
+idea
 bin
 *.cmake
+*.csv
+*.png
 CMakeCache.txt
-idea
