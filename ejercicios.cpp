@@ -88,17 +88,8 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
 	for (int i=0; i < regiones.size(); i++){
 		res.push_back(make_pair(regiones[i], 0));
 	} //Ahora res contiene la lista de pares <region, float = 0>
-
-	vector<pair<int, int>> habitantesPorHogcodusu;
-	for (individuo i: ti){
-		//Almacenamos indice para ver si pertenece y insertar (ordenado) al mismo tiempo.
-		int indiceDei = indiceMenorigual(i[INDCODUSU], habitantesPorHogcodusu);
-		if (indiceDei > -1 && habitantesPorHogcodusu[indiceDei].first == i[INDCODUSU]){
-			habitantesPorHogcodusu[indiceDei].second++;
-		} else {
-			habitantesPorHogcodusu.insert(habitantesPorHogcodusu.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 1));
-		}
-	} //Ahora habitantesPorHogcodusu es una lista (ordenada) de pares <hogcodusu, habitantes>.
+	int algo = 3;
+	vector<pair<int, int>> habitantesPorHogcodusu = contarPorAtributo(ti, [](individuo i){ return i[INDCODUSU]; }, [](individuo i){ return true; });
 
 	vector<int> validosPorRegion(6, 0); 
 	for (hogar h: th){
