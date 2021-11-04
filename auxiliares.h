@@ -90,14 +90,31 @@ int indiceMenorigual(T e, vector<T>& v){
     return i - 1;
 }
 
-//Devuelve una lista 
+//Devuelve una lista ordenada por ordenador de elementos que cumplen pred
 template<typename T, typename O, typename P>
 vector<pair<int, int>> contarPorAtributo(const vector<T>& v, O ordenador, P pred){
     vector<pair<int, int>> res;
     for (T e: v){
+        if (pred(e)){
+            auto orden = ordenador(e);
+            int indice = indiceMenorigual(orden, res);
+            if (indice > -1 && res[indice].first == orden){
+                res[indice].second++;
+            } else {
+                res.insert(res.begin() + indice + 1, make_pair(orden, 1));
+            }
+        }
+    }
+    return res;
+}
+
+template<typename T, typename O>
+vector<pair<int, int>> contarPorAtributo(const vector<T>& v, O ordenador){
+    vector<pair<int, int>> res;
+    for (T e: v){
         auto orden = ordenador(e);
         int indice = indiceMenorigual(orden, res);
-        if (indice > -1 && res[indice].first == orden && pred(e)){
+        if (indice > -1 && res[indice].first == orden){
             res[indice].second++;
         } else {
             res.insert(res.begin() + indice + 1, make_pair(orden, 1));
