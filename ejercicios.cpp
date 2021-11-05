@@ -68,14 +68,14 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 // Implementacion Problema 2
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
     vector < int > resp;
-	for (int i=0; i < th.size(); i++){
-	    if (th[i][IV1] == CASA && th[i][REGION] == region){
-	        if (th[i][IV2] > resp.size()){
-	            for (int j=resp.size(); j < th[i][IV2]; j++){
+	for (int h=0; h < th.size(); h++){
+	    if (th[h][IV1] == CASA && th[h][REGION] == region){
+	        if (th[h][IV2] > resp.size()){
+	            for (int j=resp.size(); j < th[h][IV2]; j++){
 	                resp.push_back(0);
 	            }
 	        }
-	        resp[th[i][IV2]-1]++;
+	        resp[th[h][IV2]-1]++;
 	    }
 	}
 	return resp;
@@ -127,22 +127,69 @@ bool creceElTeleworkingEnCiudadesGrandes ( eph_h t1h, eph_i t1i, eph_h t2h, eph_
     return proporcionTeleworking(t2h,t2i) > proporcionTeleworking(t1h,t1i);
 }
 
-float proporcionTeleworking(eph_h encuestaHogar, eph_i encuestaIndividuo) {
-    float trabajadores = 0, teleworkers = 0;
-    for(hogar h : encuestaHogar){
-        if(h[MAS_500] == 1 and (h[IV1] == 1 or h[IV1] == 2)){
-            for(individuo i : encuestaIndividuo){
-                if(i[INDCODUSU] == h[HOGCODUSU] && i[ESTADO] == 1 && i[PP04G] == 6){
-                    teleworkers++;
-                } else if(i[INDCODUSU] == h[HOGCODUSU] && i[ESTADO] == 1){
-                    trabajadores++;
-                }
-            }
-        }
-    }
-	return trabajadores == 0 ? 0 : teleworkers / trabajadores;
+// recorrer ti
+//crear tabla ind ordenada <(indcodusu,trabajador,teleworks)>: <(1, 3, 1),...> contar individuos y ordenarlos por indcodusu.
+
+// crear variables int trabajadores y teleworkers
+//recorrer th por hogcodusu (viendo los atributos que cumplen) y buscar en la la tabla ind ordenada el hogcodusu
+	// sumar trabajores, teleworkers del hogar que cumplen.
+
+// return trabajadores == 0 ? 0 : teleworkers / trabajadores;
+float proporcionTeleworking(eph_h th, eph_i ti) {
+	vector<pair<int,int>> trabajadoresPorCasa;
+	vector<pair<int,int>> teleworkersPorCasa;
+    for (individuo i: ti){
+		int indiceDei = indiceMenorigual(i[INDCODUSU], trabajadoresPorCasa); // // el indice de trabajadores y teleworkers por casa es el mismo
+		if (indiceDei > -1 && i[ESTADO] == 1 && trabajadoresPorCasa[indiceDei].first == i[INDCODUSU]){
+			trabajadoresPorCasa[indiceDei].second++;
+			if (i[PP04G] == 6) {
+				teleworkersPorCasa[indiceDei].second++;
+			}
+		} else {
+			if (i[ESTADO] == 1){
+				trabajadoresPorCasa.insert(trabajadoresPorCasa.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 1));
+				if (i[PP04G] == 6){
+						teleworkersPorCasa.insert(teleworkersPorCasa.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 1));
+				} else {
+					teleworkersPorCasa.insert(teleworkersPorCasa.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 0));
+				}
+			} else {
+				trabajadoresPorCasa.insert(trabajadoresPorCasa.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 0));
+				teleworkersPorCasa.insert(teleworkersPorCasa.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 0));
+			}
+		}
+	}
+
+	int trabajadores = 0, teleworkers = 0;
+	for (hogar h: th){
+		if (h[MAS_500] == 1 and (h[IV1] == 1 or h[IV1] == 2)){
+			int indiceDeh = indiceMenorigual(h[HOGCODUSU], trabajadoresPorCasa); // el indice de trabajadores y teleworkers por casa es el mismo.
+			trabajadores += trabajadoresPorCasa[indiceDeh].second;
+			if (h[II3] == 1){
+				teleworkers += teleworkersPorCasa[indiceDeh].second;
+			}
+		}
+	}
+	return trabajadores == 0 ? 0 : float(teleworkers) / float(trabajadores);
 }
 
+// float proporcionTeleworking(eph_h encuestaHogar, eph_i encuestaIndividuo) {
+//     float trabajadores = 0, teleworkers = 0;
+//     for(hogar h : encuestaHogar){
+//         if(h[MAS_500] == 1 and (h[IV1] == 1 or h[IV1] == 2)){
+//             for(individuo i : encuestaIndividuo){
+//                 if(i[INDCODUSU] == h[HOGCODUSU] && i[ESTADO] == 1}){
+// 					if(i[PP04G] == 6){
+//                     teleworkers++;
+// 						trabajadores++;
+// 					} else{
+//                     trabajadores++;
+// 					}
+//             }
+//         }
+//     }
+// 	return trabajadores == 0 ? 0 : teleworkers / trabajadores;
+// }
 
 // Implementacion Problema 5
 int costoSubsidioMejora( eph_h th, eph_i ti, int monto ){
@@ -152,7 +199,7 @@ int costoSubsidioMejora( eph_h th, eph_i ti, int monto ){
             subsidio += monto;
         }
     }
-  return subsidio;
+	return subsidio;
 }
 
 
