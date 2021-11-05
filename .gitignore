@@ -4,7 +4,7 @@
 build
 lib
 CMakeFiles
-idea
+.idea
 bin
 *.cmake
 *.csv
