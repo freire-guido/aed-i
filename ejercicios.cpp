@@ -217,11 +217,27 @@ join_hi generarJoin( eph_h th, eph_i ti ){
 
 // Implementacion Problema 7
 void ordenarRegionYCODUSU (eph_h & th, eph_i & ti) {
-	
-	// TODO
-	
+    for (int h=0; h < th.size(); h++){
+		for (int j=h; j > 0 && (th[j][REGION] < th[j-1][REGION] || (th[j][REGION] == th[j-1][REGION] && th[j][HOGCODUSU] < th[j-1][HOGCODUSU])); j--){
+			th[j].swap(th[j-1]);
+		}
+	}
+	for (int i=1; i < ti.size(); i++){
+		int j = i;
+		int indiceDei = indiceMenorigual(ti[j][INDCODUSU], th);
+		int indiceDeAnterior = indiceMenorigual(ti[j-1][INDCODUSU], th);
+		while (indiceDei < indiceDeAnterior || (indiceDei == indiceDeAnterior && ti[j][COMPONENTE] < ti[j-1][COMPONENTE])){
+			th[j].swap(th[j-1]);
+			j--;
+			indiceDei = indiceMenorigual(ti[j][INDCODUSU], th);
+			indiceDeAnterior = indiceMenorigual(ti[j-1][INDCODUSU], th);
+		}
+	}
 	return;
 }
+
+
+
 
 // Implementacion Problema 8
 vector < hogar > muestraHomogenea( eph_h & th, eph_i & ti ){
