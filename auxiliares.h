@@ -91,6 +91,24 @@ int indiceMenorigual(T e, vector<T>& v){
     return i - 1;
 }
 
+//Devuelve el indice del ultimo subvector cuyo primer elemento es menor o igual a e, -1 si no hay.
+template<typename T>
+int indiceMenorigual(T e, vector<vector<T>>& v){
+    int i = 0;
+    int j = v.size() - 1;
+    while (i <= j){
+        int k = (i + j) / 2;
+        if (v[k][0] <=  e){
+            i = k + 1;
+        } else {
+            j = k - 1;
+        }
+    }
+    return i - 1;
+}
+
 int cantidadHabitantes(dato &h,eph_i ti);
+
+void ordenarSegun(int e, vector<vector<int>>& v);
 
 #endif //SOLUCION_AUXILIARES_H

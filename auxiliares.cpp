@@ -12,3 +12,12 @@ int cantidadHabitantes(dato &h,eph_i ti){
     }
     return(habitantes);
 }
+
+//Ordena (insertion) un vector de vectores de acuerdo al valor del indice e de cada elemento.
+void ordenarSegun(int e, vector<vector<int>>& v){
+    for (int i=0; i < v.size(); i++){
+        for (int j=i; j > 0 && v[j][e] < v[j-1][e]; j--){
+            v[j].swap(v[j-1]);
+        }
+    }
+}
