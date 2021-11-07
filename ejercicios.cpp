@@ -11,12 +11,13 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 	vector<pair<int, int>> individuosUnicos; // lista (ordenada) <indcodusu, componente>
 	vector<pair<int, int>> habitantesPorIndcodusu; // lista (ordenada) <indcodusu, apariciones>
 	for (individuo i: ti){
-		pair<int, int> identificador = {i[INDCODUSU], i[COMPONENTE]};
-		int indiceEnUnicos = indiceMenorigual(identificador, individuosUnicos);
-		int indiceEnHabitantes = indiceMenorigual(i[INDCODUSU], habitantesPorIndcodusu);
 		if (i.size() != FILAS_INDIVIDUO){
 			return false;
-		} else if (ti[0][INDANIO] != i[INDANIO] || ti[0][INDTRIMESTRE] != i[INDTRIMESTRE]){
+		}
+		pair<int, int> identificador = {i[INDCODUSU], i[COMPONENTE]};
+		int indiceEnHabitantes = indiceMenorigual(i[INDCODUSU], habitantesPorIndcodusu);
+		int indiceEnUnicos = indiceMenorigual(identificador, individuosUnicos);
+		if (ti[0][INDANIO] != i[INDANIO] || ti[0][INDTRIMESTRE] != i[INDTRIMESTRE]){
 			return false;
 		} else if (indiceEnUnicos > -1 && individuosUnicos[indiceEnUnicos] == identificador) {
 			return false;
@@ -35,21 +36,22 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 			return false;
 		}
 		individuosUnicos.insert(individuosUnicos.begin() + indiceEnUnicos + 1, identificador);
-		if (indiceEnHabitantes == -1){
-			habitantesPorIndcodusu.insert(habitantesPorIndcodusu.begin() + indiceEnHabitantes + 1, make_pair(i[INDCODUSU], 1));
-		} else {
+		if (indiceEnHabitantes > -1 && habitantesPorIndcodusu[indiceEnHabitantes].first == i[INDCODUSU]){
 			if (habitantesPorIndcodusu[indiceEnHabitantes].second == 20){
 				return false;
 			}
 			habitantesPorIndcodusu[indiceEnHabitantes].second++;
+		} else {
+			habitantesPorIndcodusu.insert(habitantesPorIndcodusu.begin() + indiceEnHabitantes + 1, make_pair(i[INDCODUSU], 1));
 		}
 	}
 	vector<int> hogcodusuUnicos;
 	for (hogar h: th){
-		int indiceDeH = indiceMenorigual(h[HOGCODUSU], hogcodusuUnicos);
 		if (h.size() != FILAS_HOGAR){
 			return false;
-		} else if (indiceDeH > -1 && hogcodusuUnicos[indiceDeH] == h[HOGCODUSU]){
+		}
+		int indiceDeH = indiceMenorigual(h[HOGCODUSU], hogcodusuUnicos);
+		if (indiceDeH > -1 && hogcodusuUnicos[indiceDeH] == h[HOGCODUSU]){
 			return false;
 		} else if (h[IV2] < h[II2]){
 			return false;
@@ -69,6 +71,9 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 		hogcodusuUnicos.insert(hogcodusuUnicos.begin() + indiceDeH + 1, h[HOGCODUSU]);
 	}
 	
+	if (habitantesPorIndcodusu.size() != hogcodusuUnicos.size()){
+		return false;
+	}
 	for (int i=0; i < habitantesPorIndcodusu.size(); i++){
 		if (habitantesPorIndcodusu[i].first != hogcodusuUnicos[i]){
 			return false;
