@@ -206,15 +206,13 @@ int costoSubsidioMejora( eph_h th, eph_i ti, int monto ){
 
 // Implementacion Problema 6
 join_hi generarJoin( eph_h th, eph_i ti ){
-	join_hi resp;
-	for(individuo i : ti){
-	    for(hogar h : th){
-	        if(i[INDCODUSU] == h[HOGCODUSU]){
-	            resp.push_back({h,i});
-	        }
-	    }
+	join_hi res;
+	ordenarSegun(0, th); // Es preferible ordenar antes que crear otra copia mas (insertion + binaria)
+	for (individuo i: ti){
+		int indiceDeh = indiceMenorigual(i[INDCODUSU], th);
+		res.push_back(make_pair(th[indiceDeh], i));
 	}
-  return resp;
+	return res;
 }
 
 // Implementacion Problema 7
