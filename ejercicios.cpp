@@ -80,14 +80,14 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 // Implementacion Problema 2
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
     vector < int > resp;
-	for (int h=0; h < th.size(); h++){
-	    if (th[h][IV1] == CASA && th[h][REGION] == region){
-	        if (th[h][IV2] > resp.size()){
-	            for (int j=resp.size(); j < th[h][IV2]; j++){
+	for (hogar h: th){
+	    if (h[IV1] == CASA && h[REGION] == region){
+	        if (h[IV2] > resp.size()){
+	            for (int j=resp.size(); j < h[IV2]; j++){
 	                resp.push_back(0);
 	            }
 	        }
-	        resp[th[h][IV2]-1]++;
+	        resp[h[IV2] - 1]++;
 	    }
 	}
 	return resp;
@@ -179,9 +179,19 @@ float proporcionTeleworking(eph_h th, eph_i ti) {
 
 // Implementacion Problema 5
 int costoSubsidioMejora( eph_h th, eph_i ti, int monto ){
+	vector<pair<int, int>> habitantesPorHogcodusu;
+	for (individuo i: ti){
+		int indiceDei = indiceMenorigual(i[INDCODUSU], habitantesPorHogcodusu);
+		if (indiceDei > -1 && habitantesPorHogcodusu[indiceDei].first == i[INDCODUSU]){
+			habitantesPorHogcodusu[indiceDei].second++;
+		} else {
+			habitantesPorHogcodusu.insert(habitantesPorHogcodusu.begin() + indiceDei + 1, make_pair(i[INDCODUSU], 1));
+		}
+	}
     int subsidio = 0;
-    for(hogar h : th){
-        if(h[II7] == 1 and (cantidadHabitantes(h[HOGCODUSU],ti) - 2 > h[II2])){
+    for(hogar h: th){
+		int indiceDeh = indiceMenorigual(h[HOGCODUSU], habitantesPorHogcodusu);
+        if(h[II7] == 1 && habitantesPorHogcodusu[indiceDeh].second - 2 > h[II2]){
             subsidio += monto;
         }
     }
