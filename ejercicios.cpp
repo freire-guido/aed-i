@@ -8,14 +8,17 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 	if (th.size() == 0 || ti.size() == 0){
 		return false;
 	}
-	vector<pair<int, int>> individuosUnicos;
-	vector<int> indcodusuUnicos;
+	vector<pair<int, int>> individuosUnicos; // lista (ordenada) <indcodusu, componente>
+	vector<pair<int, int>> habitantesPorIndcodusu; // lista (ordenada) <indcodusu, apariciones>
 	for (individuo i: ti){
+		pair<int, int> identificador = {i[INDCODUSU], i[COMPONENTE]};
+		int indiceEnUnicos = indiceMenorigual(identificador, individuosUnicos);
+		int indiceEnHabitantes = indiceMenorigual(i[INDCODUSU], habitantesPorIndcodusu);
 		if (i.size() != FILAS_INDIVIDUO){
 			return false;
 		} else if (ti[0][INDANIO] != i[INDANIO] || ti[0][INDTRIMESTRE] != i[INDTRIMESTRE]){
 			return false;
-		} else if (perteneceBinario(make_pair(i[INDCODUSU], i[COMPONENTE]), individuosUnicos)) {
+		} else if (indiceEnUnicos > -1 && individuosUnicos[indiceEnUnicos] == identificador) {
 			return false;
 		} else if (i[COMPONENTE] > 20){
 			return false;
@@ -31,16 +34,22 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 		&& (0 <= i[PP04G] && i[PP04G] <= 10))){
 			return false;
 		}
-		insertarOrdenado(make_pair(i[INDCODUSU], i[COMPONENTE]), individuosUnicos);
-		if (!perteneceBinario(i[INDCODUSU], indcodusuUnicos)){
-			insertarOrdenado(i[INDCODUSU], indcodusuUnicos);
+		individuosUnicos.insert(individuosUnicos.begin() + indiceEnUnicos + 1, identificador);
+		if (indiceEnHabitantes == -1){
+			habitantesPorIndcodusu.insert(habitantesPorIndcodusu.begin() + indiceEnHabitantes + 1, make_pair(i[INDCODUSU], 1));
+		} else {
+			if (habitantesPorIndcodusu[indiceEnHabitantes].second == 20){
+				return false;
+			}
+			habitantesPorIndcodusu[indiceEnHabitantes].second++;
 		}
 	}
 	vector<int> hogcodusuUnicos;
 	for (hogar h: th){
+		int indiceDeH = indiceMenorigual(h[HOGCODUSU], hogcodusuUnicos);
 		if (h.size() != FILAS_HOGAR){
 			return false;
-		} else if (perteneceBinario(h[HOGCODUSU], hogcodusuUnicos)){
+		} else if (indiceDeH > -1 && hogcodusuUnicos[indiceDeH] == h[HOGCODUSU]){
 			return false;
 		} else if (h[IV2] < h[II2]){
 			return false;
@@ -57,10 +66,13 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 		&& (h[II3] == 1 || h[II3] == 2))){
 				return false;
 		}
-		insertarOrdenado(h[HOGCODUSU], hogcodusuUnicos);
+		hogcodusuUnicos.insert(hogcodusuUnicos.begin() + indiceDeH + 1, h[HOGCODUSU]);
 	}
-	if (indcodusuUnicos != hogcodusuUnicos){
-		return false;
+	
+	for (int i=0; i < habitantesPorIndcodusu.size(); i++){
+		if (habitantesPorIndcodusu[i].first != hogcodusuUnicos[i]){
+			return false;
+		}
 	}
 	return true;
 }
@@ -127,14 +139,6 @@ bool creceElTeleworkingEnCiudadesGrandes ( eph_h t1h, eph_i t1i, eph_h t2h, eph_
     return proporcionTeleworking(t2h,t2i) > proporcionTeleworking(t1h,t1i);
 }
 
-// recorrer ti
-//crear tabla ind ordenada <(indcodusu,trabajador,teleworks)>: <(1, 3, 1),...> contar individuos y ordenarlos por indcodusu.
-
-// crear variables int trabajadores y teleworkers
-//recorrer th por hogcodusu (viendo los atributos que cumplen) y buscar en la la tabla ind ordenada el hogcodusu
-	// sumar trabajores, teleworkers del hogar que cumplen.
-
-// return trabajadores == 0 ? 0 : teleworkers / trabajadores;
 float proporcionTeleworking(eph_h th, eph_i ti) {
 	vector<pair<int,int>> trabajadoresPorCasa;
 	vector<pair<int,int>> teleworkersPorCasa;
@@ -172,24 +176,6 @@ float proporcionTeleworking(eph_h th, eph_i ti) {
 	}
 	return trabajadores == 0 ? 0 : float(teleworkers) / float(trabajadores);
 }
-
-// float proporcionTeleworking(eph_h encuestaHogar, eph_i encuestaIndividuo) {
-//     float trabajadores = 0, teleworkers = 0;
-//     for(hogar h : encuestaHogar){
-//         if(h[MAS_500] == 1 and (h[IV1] == 1 or h[IV1] == 2)){
-//             for(individuo i : encuestaIndividuo){
-//                 if(i[INDCODUSU] == h[HOGCODUSU] && i[ESTADO] == 1}){
-// 					if(i[PP04G] == 6){
-//                     teleworkers++;
-// 						trabajadores++;
-// 					} else{
-//                     trabajadores++;
-// 					}
-//             }
-//         }
-//     }
-// 	return trabajadores == 0 ? 0 : teleworkers / trabajadores;
-// }
 
 // Implementacion Problema 5
 int costoSubsidioMejora( eph_h th, eph_i ti, int monto ){

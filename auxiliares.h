@@ -3,6 +3,7 @@
 
 #include "definiciones.h"
 
+//-- DEPRECADA: Usar indiceMenorigual -- Inserta un elemento en una lista de manera ordenada.
 template<typename T>
 void insertarOrdenado(T e, vector<T>& v){
     //busca el elemento "anterior" (el menor mas grande)
@@ -20,7 +21,7 @@ void insertarOrdenado(T e, vector<T>& v){
     return;
 }
 
-//Dada una lista v de pares T, V ordenados, devuelve verdadero si e pertenece al primer elemento de algun par
+//-- DEPRECADA: Usar indiceMenorigual -- Dada una lista v de pares T, V ordenados, devuelve verdadero si e pertenece al primer elemento de algun par.
 template<typename T, typename V>
 bool perteneceBinario(T e, const vector<pair<T, V>>& v){
     int i = 0;
@@ -39,7 +40,7 @@ bool perteneceBinario(T e, const vector<pair<T, V>>& v){
     return false;
 }
 
-//Dada una lista v de T ordenados, devuelve verdadero si e pertenece a v
+//-- DEPRECADA: Usar indiceMenorigual -- Dada una lista v de T ordenados, devuelve verdadero si e pertenece a v.
 template<typename T>
 bool perteneceBinario(T e, const vector<T>& v){
     int i = 0;
@@ -58,7 +59,7 @@ bool perteneceBinario(T e, const vector<T>& v){
     return false;
 }
 
-//Devuelve el indice del ultimo par de v con primer elemento menor o igual a e, -1 si no hay
+//Devuelve el indice del ultimo par de v con primer elemento menor o igual a e, -1 si no hay.
 template<typename T, typename V>
 int indiceMenorigual(T e, vector<pair<T, V>>& v){
     int i = 0;
@@ -74,7 +75,7 @@ int indiceMenorigual(T e, vector<pair<T, V>>& v){
     return i - 1; 
 }
 
-//Devuelve el indice del ultimo elemento de v menor o igual a e, -1 si no hay
+//Devuelve el indice del ultimo elemento de v menor o igual a e, -1 si no hay.
 template<typename T>
 int indiceMenorigual(T e, vector<T>& v){
     int i = 0;
