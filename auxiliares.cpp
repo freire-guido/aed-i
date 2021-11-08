@@ -21,3 +21,7 @@ void ordenarSegun(int e, vector<vector<int>>& v){
         }
     }
 }
+
+float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud){
+    return sqrt((centro.first - latitud)*(centro.first - latitud) + (centro.second - longitud)*(centro.second - longitud)); // Exponenciacion en C++ ???
+}

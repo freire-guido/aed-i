@@ -261,10 +261,14 @@ void corregirRegion( eph_h & th, eph_i ti ) {
 
 // Implementacion Problema 10
 vector < int > histogramaDeAnillosConcentricos( eph_h th, eph_i ti, pair < int, int > centro, vector < int > distancias ){
-	vector < int > resp = {};
-	
-	// TODO
-	
+	vector < int > resp(distancias.size(), 0);
+	for (hogar h: th){
+		int distancia = distanciaEuclideana(centro, h[HOGLATITUD], h[HOGLONGITUD]);
+		int indiceDed = indiceMenorigual(distancia, distancias) + 1;
+		if (indiceDed <= resp.size() - 1){
+			resp[indiceDed]++;
+		}
+	}
 	return resp;
 }
 

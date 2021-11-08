@@ -111,4 +111,6 @@ int cantidadHabitantes(dato &h,eph_i ti);
 
 void ordenarSegun(int e, vector<vector<int>>& v);
 
+float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);
+
 #endif //SOLUCION_AUXILIARES_H
