@@ -13,6 +13,34 @@ int cantidadHabitantes(dato &h,eph_i ti){
     return(habitantes);
 }
 
+int indiceMenorigual(int e, vector<pair<int, int>>& v){
+    int i = 0;
+    int j = v.size() - 1;
+    while (i <= j){
+        int k = (i + j) / 2;
+        if (v[k].first <=  e){
+            i = k + 1;
+        } else {
+            j = k - 1;
+        }
+    }
+    return i - 1; 
+}
+
+int indiceMenorigual(int e, vector<vector<int>>& v){
+    int i = 0;
+    int j = v.size() - 1;
+    while (i <= j){
+        int k = (i + j) / 2;
+        if (v[k][0] <=  e){
+            i = k + 1;
+        } else {
+            j = k - 1;
+        }
+    }
+    return i - 1;
+}
+
 //Ordena (insertion) un vector de vectores de acuerdo al valor del indice e de cada elemento.
 void ordenarSegun(int e, vector<vector<int>>& v){
     for (int i=0; i < v.size(); i++){
