@@ -21,8 +21,6 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 			return false;
 		} else if (indiceEnUnicos > -1 && individuosUnicos[indiceEnUnicos] == identificador) {
 			return false;
-		} else if (i[COMPONENTE] > 20){
-			return false;
 		} else if (!(i[INDCODUSU] > 0
 		&& i[COMPONENTE] > 0
 		&& (0 < i[INDTRIMESTRE] && i[INDTRIMESTRE] <= 4)
