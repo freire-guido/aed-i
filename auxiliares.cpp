@@ -3,16 +3,6 @@
 #include "gtest/gtest.h"
 #include "ejercicios.h"
 
-int cantidadHabitantes(dato &h,eph_i ti){
-    int habitantes = 0;
-    for(individuo i : ti){
-        if(i[INDCODUSU] == h){
-            habitantes += 1;
-        }
-    }
-    return(habitantes);
-}
-
 int indiceMenorigual(int e, vector<pair<int, int>>& v){
     int i = 0;
     int j = v.size() - 1;
