@@ -25,6 +25,11 @@ int indiceMenorigual(int e, vector<pair<int, int>>& v);
 //Devuelve el indice del ultimo subvector cuyo primer elemento es menor o igual a e, -1 si no hay.
 int indiceMenorigual(int e, vector<vector<int>>& v);
 
+template<typename T>
+void insertarOrdenado(T e, vector<T>& v){
+    v.insert(v.begin() + indiceMenorigual(e, v) + 1, e);
+}
+
 void ordenarSegun(int e, vector<vector<int>>& v);
 
 float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);

@@ -220,15 +220,21 @@ void ordenarRegionYCODUSU (eph_h & th, eph_i & ti) {
 			th[j].swap(th[j-1]);
 		}
 	}
+	vector<pair<int, int>> ordenHogcodusus;
+	for (int h=0; h < th.size(); h++){
+		insertarOrdenado(make_pair(th[h][HOGCODUSU], h), ordenHogcodusus);
+	}
 	for (int i=1; i < ti.size(); i++){
 		int j = i;
-		int indiceDei = indiceMenorigual(ti[j][INDCODUSU], th);
-		int indiceDeAnterior = indiceMenorigual(ti[j-1][INDCODUSU], th);
-		while (indiceDei < indiceDeAnterior || (indiceDei == indiceDeAnterior && ti[j][COMPONENTE] < ti[j-1][COMPONENTE])){
-			th[j].swap(th[j-1]);
+		int indiceDei = ordenHogcodusus[indiceMenorigual(ti[j][INDCODUSU], ordenHogcodusus)].second;
+		int indiceDeAnterior = ordenHogcodusus[indiceMenorigual(ti[j-1][INDCODUSU], ordenHogcodusus)].second;
+		while (j > 0 && (indiceDei < indiceDeAnterior || (indiceDei == indiceDeAnterior && ti[j][COMPONENTE] < ti[j-1][COMPONENTE]))){
+			ti[j].swap(ti[j-1]);
 			j--;
-			indiceDei = indiceMenorigual(ti[j][INDCODUSU], th);
-			indiceDeAnterior = indiceMenorigual(ti[j-1][INDCODUSU], th);
+			if (j > 0){ // TODO limpiar este for deconstruido asqueroso
+				indiceDei = ordenHogcodusus[indiceMenorigual(ti[j][INDCODUSU], ordenHogcodusus)].second;
+				indiceDeAnterior = ordenHogcodusus[indiceMenorigual(ti[j-1][INDCODUSU], ordenHogcodusus)].second;
+			}
 		}
 	}
 	return;
