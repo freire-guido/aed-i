@@ -245,6 +245,18 @@ TEST(esEncuestaValidaTEST, invalidaHogaresSinIndividuos) {
     EXPECT_FALSE(esEncuestaValida(th, ti));
 }
 
+TEST(esEncuestaValidaTEST, invalidaHogaresSinIndividuosEIndividuosSinHogares) {
+    eph_h th = {{22114, 2020,   3,  319611, 629088, 3,  41, 0,  1,  3,  1,  2},
+                {20957, 2020,   3,  313965, 623297, 1,  43, 0,  1,  3,  1,  2},
+                {22866, 2020,   3,  313790, 623295, 1,  42, 0,  1,  3,  1,  2}};
+    eph_i ti = {{20957, 2020,   1,  1,  3,  1,  88, 0,  0,  90000,  10},
+                {20957, 2020,   2,  1,  3,  2,  82, 0,  0,  25000,  10},
+                {22114, 2020,   1,  0,  3,  1,  18, 0,  0,  20000,  10},
+                {22113, 2020,   1,  0,  3,  1,  88, 0,  0,  90000,  10}};
+
+    EXPECT_FALSE(esEncuestaValida(th, ti));
+}
+
 TEST(esEncuestaValidaTEST, lugarDeTrabajoINVALIDO) {
 
     eph_h th = {{22114, 2020,   3,  319611, 629088, 3,  41, 0,  1,  3,  1,  2},
