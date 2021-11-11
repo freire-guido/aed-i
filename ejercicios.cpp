@@ -84,12 +84,12 @@ bool esEncuestaValida ( eph_h th, eph_i ti ) {
 vector < int > histHabitacional ( eph_h th, eph_i ti, int region ) {
     vector < int > resp;
 	for (hogar h: th){
+        if (h[IV2] > resp.size() && h[REGION] == region){
+            for (int j=resp.size(); j < h[IV2]; j++){
+                resp.push_back(0);
+            }
+        }
 	    if (h[IV1] == CASA && h[REGION] == region){
-	        if (h[IV2] > resp.size()){
-	            for (int j=resp.size(); j < h[IV2]; j++){
-	                resp.push_back(0);
-	            }
-	        }
 	        resp[h[IV2] - 1]++;
 	    }
 	}
