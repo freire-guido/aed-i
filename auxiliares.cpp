@@ -43,3 +43,28 @@ void ordenarSegun(int e, vector<vector<int>>& v){
 float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud){
     return sqrt((centro.first - latitud)*(centro.first - latitud) + (centro.second - longitud)*(centro.second - longitud)); // Exponenciacion en C++ ???
 }
+
+bool cumpleBusqueda(individuo i, vector<pair<int,dato>> busqueda){
+    for (pair<int,dato> b: busqueda){
+        if (i[b.first] != b.second){
+            return false;
+        }
+    }
+    return true;
+}
+
+bool perteneceBinario(int e, vector<int> v){
+    int indiceDeE = indiceMenorigual(e, v);
+    if (indiceDeE < 0 || v[indiceDeE] != e){
+        return false;
+    }
+    return true;
+}
+
+bool perteneceBinario(int e, vector<vector<int>> v){
+    int indiceDeE = indiceMenorigual(e, v);
+    if (indiceDeE < 0 || v[indiceDeE][0] != e){
+        return false;
+    }
+    return true;
+}

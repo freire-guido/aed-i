@@ -278,11 +278,32 @@ vector < int > histogramaDeAnillosConcentricos( eph_h th, eph_i ti, pair < int, 
 
 // Implementacion Problema 11
 pair < eph_h, eph_i > quitarIndividuos(eph_i & ti, eph_h & th, vector < pair < int, dato > >  busqueda ){
-    eph_h rth = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    eph_i rti = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    pair < eph_h, eph_i > resp = make_pair(rth, rti);
-		
-	// TODO
+    eph_h rth;
+    eph_i rti;
+	vector<int> noCumplenBusqueda;
 	
+	for (int i=0; i < ti.size(); i++){
+		if (cumpleBusqueda(ti[i], busqueda)){
+			insertarOrdenado(ti[i], rti);
+			ti.erase(ti.begin() + i);
+			i--; // ti tiene un elemento menos
+		} else {
+			insertarOrdenado(ti[i][INDCODUSU], noCumplenBusqueda);
+		}
+	}
+
+	for (int h=0; h < th.size(); h++){
+		bool estaEnCumplenBusqueda = perteneceBinario(th[h][HOGCODUSU], rti);
+		bool estaEnnoCumplenBusqueda = perteneceBinario(th[h][HOGCODUSU], noCumplenBusqueda);
+		if (estaEnCumplenBusqueda){
+			rth.push_back(th[h]);
+			if (!estaEnnoCumplenBusqueda){
+				th.erase(th.begin() + h);
+				h--;
+			}
+		}
+	}
+
+    pair < eph_h, eph_i > resp = make_pair(rth, rti);
 	return resp;
 }

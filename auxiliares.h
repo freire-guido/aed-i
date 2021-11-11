@@ -34,4 +34,12 @@ void ordenarSegun(int e, vector<vector<int>>& v);
 
 float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);
 
+bool cumpleBusqueda(individuo i, vector<pair<int, dato>> busqueda);
+
+//Devuelve true si y solo si hay un elemento en v igual a e
+bool perteneceBinario(int e, vector<int> v);
+
+//Devuelve true si y solo si hay un subvector en v con primer valor igual a e
+bool perteneceBinario(int e, vector<vector<int>> v);
+
 #endif //SOLUCION_AUXILIARES_H
