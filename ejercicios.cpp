@@ -106,7 +106,6 @@ vector< pair < int, float > > laCasaEstaQuedandoChica ( eph_h th, eph_i ti ) {
 
 	vector<pair<int, int>> habitantesPorHogcodusu;
 	for (individuo i: ti){
-		//Almacenamos indice para ver si pertenece y insertar (ordenado) al mismo tiempo.
 		int indiceDei = indiceMenorigual(i[INDCODUSU], habitantesPorHogcodusu);
 		if (indiceDei > -1 && habitantesPorHogcodusu[indiceDei].first == i[INDCODUSU]){
 			habitantesPorHogcodusu[indiceDei].second++;
@@ -260,22 +259,25 @@ vector < hogar > muestraHomogenea( eph_h & th, eph_i & ti ){
 	vector<int> muestraLarga = {};
 	for (int col=0; col < matrizDiferencias.size(); col++){
 		for (int fil=0; fil < matrizDiferencias.size(); fil++){
-			int k = col + fil + 1;
-			vector<int> muestraActual = {col, k};
-			while (0 <= k && k < matrizDiferencias.size()){
-				int i = k;
-				vector<int> columnaK = columna(matrizDiferencias, k, matrizDiferencias.size() - i);
-				int j = indiceMenorigual(matrizDiferencias[fil][col], columnaK);
-				if (j > -1 && matrizDiferencias[j][i] == matrizDiferencias[fil][col]){
-					k = i + j + 1;
-					muestraActual.push_back(k);
+			if (matrizDiferencias[fil][col] > 0){
+				int k = col + fil + 1;
+				vector<int> muestraActual = {col, k};
+				while (0 <= k && k < matrizDiferencias.size()){
+					int i = k;
+					// como hay un sufijo de -1s al final e indiceMenorigual necesita una lista ordenada, recorto la lista
+					vector<int> columnaK = columna(matrizDiferencias, k, matrizDiferencias.size() - i);
+					int j = indiceMenorigual(matrizDiferencias[fil][col], columnaK);
+					if (j > -1 && matrizDiferencias[j][i] == matrizDiferencias[fil][col]){
+						k = i + j + 1;
+						muestraActual.push_back(k);
+					}
+					else {
+						k = -1;
+					}
 				}
-				else {
-					k = -1;
+				if (muestraActual.size() >= 3 && muestraActual.size() > muestraLarga.size()){
+					muestraLarga = muestraActual;
 				}
-			}
-			if (muestraActual.size() >= 3 && muestraActual.size() > muestraLarga.size()){
-				muestraLarga = muestraActual;
 			}
 		}
 	}
