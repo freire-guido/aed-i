@@ -240,17 +240,60 @@ void ordenarRegionYCODUSU (eph_h & th, eph_i & ti) {
 	return;
 }
 
-
-
-
 // Implementacion Problema 8
+	
 vector < hogar > muestraHomogenea( eph_h & th, eph_i & ti ){
-    hogar h = {};
-    vector < hogar > resp = {h};
+	vector<pair<int, int>> vingresosPorHogar = ingresosPorHogar(ti);
+	ordenarSegunSegundo(vingresosPorHogar);
+	vector<int> vectorDiferencias;
+	for (int i=1; i < vingresosPorHogar.size(); i++){
+		vectorDiferencias.push_back(vingresosPorHogar[i].second - vingresosPorHogar[i-1].second);
+	}
+	vector<vector<int>> matrizDiferencias(vectorDiferencias.size(), vector<int>(vectorDiferencias.size(), -1));
+	matrizDiferencias[0] = vectorDiferencias;
+	for (int col=0; col < matrizDiferencias.size(); col++){
+		for (int fil=1; fil < matrizDiferencias.size() - col; fil++){
+			matrizDiferencias[fil][col] = matrizDiferencias[fil-1][col] + matrizDiferencias[0][col+fil];
+		}
+	}
 
-    // TODO
+	vector<int> muestraLarga = {};
+	for (int col=0; col < matrizDiferencias.size(); col++){
+		for (int fil=0; fil < matrizDiferencias.size(); fil++){
+			int k = col + fil + 1;
+			vector<int> muestraActual = {col, k};
+			while (0 <= k && k < matrizDiferencias.size()){
+				int i = k;
+				vector<int> columnaK = columna(matrizDiferencias, k, matrizDiferencias.size() - i);
+				int j = indiceMenorigual(matrizDiferencias[fil][col], columnaK);
+				if (j > -1 && matrizDiferencias[j][i] == matrizDiferencias[fil][col]){
+					k = i + j + 1;
+					muestraActual.push_back(k);
+				}
+				else {
+					k = -1;
+				}
+			}
+			if (muestraActual.size() >= 3 && muestraActual.size() > muestraLarga.size()){
+				muestraLarga = muestraActual;
+			}
+		}
+	}
 
-    return  resp;
+	vector<hogar> res;
+	if (muestraLarga.size() >= 3){
+		for (int i=0; i < muestraLarga.size(); i++){
+			muestraLarga[i] = vingresosPorHogar[muestraLarga[i]].first;
+		}
+		for (int codusu: muestraLarga){
+			for (hogar h: th){
+				if (codusu == h[HOGCODUSU]){
+					res.push_back(h);
+				}
+			}
+		}
+	}
+    return res;
 }
 
 // Implementacion Problema 9
@@ -281,7 +324,6 @@ pair < eph_h, eph_i > quitarIndividuos(eph_i & ti, eph_h & th, vector < pair < i
     eph_h rth;
     eph_i rti;
 	vector<int> noCumplenBusqueda;
-	
 	for (int i=0; i < ti.size(); i++){
 		if (cumpleBusqueda(ti[i], busqueda)){
 			insertarOrdenado(ti[i], rti);
@@ -291,7 +333,6 @@ pair < eph_h, eph_i > quitarIndividuos(eph_i & ti, eph_h & th, vector < pair < i
 			insertarOrdenado(ti[i][INDCODUSU], noCumplenBusqueda);
 		}
 	}
-
 	for (int h=0; h < th.size(); h++){
 		bool estaEnCumplenBusqueda = perteneceBinario(th[h][HOGCODUSU], rti);
 		bool estaEnnoCumplenBusqueda = perteneceBinario(th[h][HOGCODUSU], noCumplenBusqueda);

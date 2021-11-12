@@ -32,6 +32,8 @@ void insertarOrdenado(T e, vector<T>& v){
 
 void ordenarSegun(int e, vector<vector<int>>& v);
 
+void ordenarSegunSegundo(vector<pair<int, int>>& v);
+
 float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);
 
 bool cumpleBusqueda(individuo i, vector<pair<int, dato>> busqueda);
@@ -41,5 +43,10 @@ bool perteneceBinario(int e, vector<int> v);
 
 //Devuelve true si y solo si hay un subvector en v con primer valor igual a e
 bool perteneceBinario(int e, vector<vector<int>> v);
+
+vector<pair<int, int>> ingresosPorHogar(eph_i& ti);
+
+//Devuelve los cota elementos de la k-esima columna de m
+vector<int> columna(vector<vector<int>> m, int k, int cota);
 
 #endif //SOLUCION_AUXILIARES_H
