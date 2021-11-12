@@ -3,11 +3,11 @@ TPI del grupo 1, comision 3 de "Algoritmos y Estructuras de Datos I" (FCEyN)
 
 ### Integrantes:
 
-* Freire, Guido   978/21  gfreire@dc.uba.ar
+* Freire, Guido
 
-* Hernandez, Agustin  37/20   ahernandez@dc.uba.ar
+* Hernandez, Agustin
 
-* Machulsky, Joaquin  521/21  jmachulsky@dc.uba.ar
+* Machulsky, Joaquin
 
 ---
 
