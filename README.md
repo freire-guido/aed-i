@@ -13,6 +13,11 @@ TPI del grupo 1, comision 3 de "Algoritmos y Estructuras de Datos I" (FCEyN)
 
 ## Notas al corrector
 
+### Cambios desde la ultima entrega
+* **muestraHomogenea** ahora chequea que la longitud de res sea mayor o igual a 3 en un if completamente desacoplado (no hay forma de que devuelva salida de menos de 3 elementos).
+* **quitarIndividuos** ahora almacena los individuos que no cumplen la busqueda, en vez de sus CODUSU.
+* **corregirRegion** ahora utiliza las definiciones de GBA y PAMPEANA en lugar de sus codigos.
+
 ### Auxiliares
 * **indiceMenorigual** es la columna vertebral de la resolucion del TP. Dado un "e" y un vector "v", devuelve un indice "i" (de v) tal que todos los elementos anteriores a i son menores o iguales a e y todos los siguientes son estrictamente mayores. Esto se hace por busqueda binaria, lo que significa que indiceMenorigual tiene una doble funcion: permite saber si un elemento pertenece o no a una lista y a su vez donde se deberia insertar para que el vector resultante siga estando ordenado.
 

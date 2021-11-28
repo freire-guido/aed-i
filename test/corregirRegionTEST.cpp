@@ -50,3 +50,23 @@ TEST(corregirRegionTEST, cuatroHogares) {
 
     EXPECT_EQ( th, esperado );
 }
+
+// Test nuestros
+
+TEST(corregirRegionTEST, dosHogaresPrimeroSinGbaYSegundoCon) {
+    eph_h th = {{1, 2020,   3,  319611, 629088, 3,  4, 0,  1,  3,  1,  2},
+                {22114, 2020,   3,  319611, 629088, 3,  GBA, 0,  1,  3,  1,  2}};
+    th[0][REGION] = 4;
+    th[0][HOGCODUSU] = 1;
+    th[1][REGION] = GBA;
+    eph_i ti = {{1, 2020,   1,  1,  3,  1,  88, 0,  0,  90000,  10},
+                {22114, 2020,   1,  1,  3,  1,  88, 0,  0,  90000,  10}};
+    ti[0][INDCODUSU] = 1;
+
+    eph_h th_esperado = th;
+    th_esperado[1][REGION] = PAMPEANA;
+
+    corregirRegion(th, ti);
+
+    EXPECT_EQ(th_esperado, th);
+}

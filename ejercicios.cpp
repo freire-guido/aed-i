@@ -275,7 +275,7 @@ vector < hogar > muestraHomogenea( eph_h & th, eph_i & ti ){
 						k = -1;
 					}
 				}
-				if (muestraActual.size() >= 3 && muestraActual.size() > muestraLarga.size()){
+				if (muestraActual.size() > muestraLarga.size()){
 					muestraLarga = muestraActual;
 				}
 			}
@@ -301,8 +301,8 @@ vector < hogar > muestraHomogenea( eph_h & th, eph_i & ti ){
 // Implementacion Problema 9
 void corregirRegion( eph_h & th, eph_i ti ) {
     for(int h=0;h<th.size();h++){
-        if(th[h][REGION] == 1){
-            th[h][REGION] = 43;
+        if(th[h][REGION] == GBA){
+            th[h][REGION] = PAMPEANA;
         }
     }
 	return;
@@ -325,14 +325,14 @@ vector < int > histogramaDeAnillosConcentricos( eph_h th, eph_i ti, pair < int, 
 pair < eph_h, eph_i > quitarIndividuos(eph_i & ti, eph_h & th, vector < pair < int, dato > >  busqueda ){
     eph_h rth;
     eph_i rti;
-	vector<int> noCumplenBusqueda;
+	vector<individuo> noCumplenBusqueda;
 	for (int i=0; i < ti.size(); i++){
 		if (cumpleBusqueda(ti[i], busqueda)){
 			insertarOrdenado(ti[i], rti);
 			ti.erase(ti.begin() + i);
 			i--; // ti tiene un elemento menos
 		} else {
-			insertarOrdenado(ti[i][INDCODUSU], noCumplenBusqueda);
+			insertarOrdenado(ti[i], noCumplenBusqueda);
 		}
 	}
 	for (int h=0; h < th.size(); h++){
